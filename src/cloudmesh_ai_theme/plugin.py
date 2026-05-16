@@ -22,5 +22,28 @@ class CloudmeshAIThemePlugin(BasePlugin):
             config["theme"] = {}
         
         config["theme"]["custom_dir"] = str(target_dir)
+
+        # Inject default auto-dark-mode palette if not already defined
+        if "palette" not in config["theme"]:
+            config["theme"]["palette"] = [
+                {
+                    "scheme": "default",
+                    "primary": "#ff0000",
+                    "accent": "#ff0000",
+                    "toggle": {
+                        "icon": "sunny",
+                        "name": "Switch to dark mode",
+                    },
+                },
+                {
+                    "scheme": "slate",
+                    "primary": "#ff0000",
+                    "accent": "#ff0000",
+                    "toggle": {
+                        "icon": "moon",
+                        "name": "Switch to light mode",
+                    },
+                },
+            ]
         
         return config
