@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,24 +8,43 @@ dynamic = ["version"]
 description = "Theme for Cloudmesh AI documentation"
 readme = "README.md"
 requires-python = ">=3.8"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
-    "Operating System :: OS Independent",
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "Cloudmesh AI Contributors" }
 ]
 
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+]
+
+dependencies = ["mkdocs"]
+
+[project.urls]
+Homepage = "https://github.com/cloudmesh/cloudmesh-ai-theme"
+
+[project.entry-points."mkdocs.plugins"]
+cloudmesh-ai-theme = "cloudmesh_ai_theme.plugin:CloudmeshAIThemePlugin"
+
+# CLI entry point (modern replacement for setup.py + entry_points.txt)
+[project.scripts]
+cloudmesh-ai-theme-install = "cloudmesh_ai_theme:install_assets"
+
 [tool.setuptools]
+package-dir = {"" = "src"}
 include-package-data = true
-packages = ["cloudmesh_ai_theme"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.dynamic]
 version = {attr = "cloudmesh_ai_theme.__version__"}
 
 [tool.setuptools.package-data]
-cloudmesh_ai_theme = ["assets/*", "css/*", "theme/*", "theme.yml"]
-
-[project.scripts]
-cloudmesh-ai-theme-install = "cloudmesh_ai_theme:install_assets"
-
-[project.entry-points."mkdocs.themes"]
-cloudmesh-ai-theme = "cloudmesh_ai_theme"
+cloudmesh_ai_theme = [
+  "assets/*",
+  "css/*",
+  "theme/*",
+  "theme.yml"
+]

@@ -1,17 +1,23 @@
 __pycache__/
-*.py[cod]
-*$py.class
-.env
-.venv
-env/
+*.pyc
+*.pyo
+
+# env
+.venv/
 venv/
-ENV/
+.env/
+
+# build
 build/
 dist/
 *.egg-info/
+
+# tooling
 .pytest_cache/
-.coverage
-htmlcov/
 .mypy_cache/
 .ruff_cache/
-site/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store

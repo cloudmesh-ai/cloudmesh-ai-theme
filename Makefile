@@ -23,6 +23,7 @@ test:
 
 # Start mkdocs serve for the test site
 view:
+	lsof -ti:8000 | xargs kill -9 || true
 	pip install -e .
 	mkdocs serve --livereload -f tests/mkdocs.yml
 

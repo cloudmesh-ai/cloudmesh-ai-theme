@@ -1,0 +1,1044 @@
+/Users/grey/work/cloudmesh-ai-theme
+├── .github
+│   └── workflows
+│       └── release.yml
+├── .gitignore
+├── MANIFEST.in
+├── Makefile
+├── README.md
+├── VERSION
+├── a
+├── cloudmesh_ai_theme
+│   ├── __init__.py
+│   ├── assets
+│   │   ├── favicon copy.ico
+│   │   ├── favicon.svg
+│   │   └── logo-white.png
+│   ├── css
+│   │   └── custom.css
+│   ├── theme
+│   │   └── main.html
+│   └── theme.yml
+├── cloudmesh_ai_theme.egg-info
+│   ├── SOURCES.txt
+│   ├── dependency_links.txt
+│   ├── entry_points.txt
+│   └── top_level.txt
+├── pyproject.toml
+├── setup.py
+└── tools
+    ├── convert_to_ico.py
+    └── generate_favicon.py
+
+File Contents:
+=============================
+release.yml
+---------------------------------------
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+=============================
+
+=============================
+.gitignore
+---------------------------------------
+__pycache__/
+*.py
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+site/
+=============================
+
+=============================
+MANIFEST.in
+---------------------------------------
+recursive-include cloudmesh_ai_theme/assets *
+recursive-include cloudmesh_ai_theme/css *
+recursive-include cloudmesh_ai_theme/theme *
+include cloudmesh_ai_theme/theme.yml
+=============================
+
+=============================
+Makefile
+---------------------------------------
+.PHONY: help pypi test view clean
+
+# Default target
+all: test
+
+help:
+        @echo "Available targets:"
+        @echo "  all    - Run tests (default)"
+        @echo "  pypi   - Install build tools, build package, and upload to 
+PyPI"
+        @echo "  test   - Run theme verification tests"
+        @echo "  view   - Start mkdocs serve for the test site"
+        @echo "  clean  - Remove build artifacts"
+
+# Build and upload to PyPI
+pypi:
+        pip install build twine
+        python3 -m build
+        python3 -m twine upload dist/*
+
+# Run theme verification tests
+test:
+        python3 tests/test_theme.py
+
+# Start mkdocs serve for the test site
+view:
+        pip install -e .
+        mkdocs serve --livereload -f tests/mkdocs.yml
+
+# Clean build artifacts
+clean:
+        rm -rf build/
+        rm -rf dist/
+        rm -rf *.egg-info
+=============================
+
+=============================
+README.md
+---------------------------------------
+# Cloudmesh AI Theme Guide
+
+Welcome to the guide for the **Cloudmesh AI Theme**. This package provides a 
+consistent look and feel for Cloudmesh AI project documentation, built as an 
+extension of the Material for MkDocs theme.
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage-guide)
+  - [Primary Method (Recommended)](#primary-method-recommended)
+  - [Configuration Options](#configuration-options)
+  - [Alternative: Manual Asset Deployment](#alternative-manual-asset-deployment)
+- [Development & Contribution](#development--contribution)
+  - [Local Development](#local-development)
+  - [Running Tests](#running-tests)
+- [Maintainer's Guide](#maintainers-guide)
+  - [Project Structure](#project-structure)
+  - [Version Management](#version-management)
+  - [Release Process](#release-process)
+
+---
+
+## Introduction
+
+The `cloudmesh-ai-theme` is a Python package that provides branding for 
+Cloudmesh AI documentation. Instead of copying CSS and images into every 
+project, this package allows you to apply the theme via a configuration change 
+in your `mkdocs.yml`.
+
+It automatically handles:
+- **Branding**: Injects the "Cloudmesh AI" site name and a standardized footer.
+- **Styling**: Applies custom CSS.
+- **Assets**: Provides shared logos and favicons.
+
+---
+
+## Installation
+
+The theme is distributed as a Python package. You can install it using `pip`:
+
+```bash
+pip install cloudmesh-ai-theme
+```
+
+---
+
+## Usage
+
+### Primary Method (Recommended)
+
+The simplest way to use the theme is to specify it by name in your `mkdocs.yml` 
+file. This method automatically applies all branding, styles, and assets.
+
+```yaml
+theme:
+  name: cloudmesh-ai-theme
+```
+
+### Configuration Options
+
+You can customize the theme while maintaining the Cloudmesh AI layout. 
+Currently, the following options are supported:
+
+#### `primary_color`
+Change the primary accent color of the theme.
+```yaml
+theme:
+  name: cloudmesh-ai-theme
+  primary_color: "#ff0000" # Example: Red
+```
+
+#### `logo` and `favicon`
+You can override the default Cloudmesh AI logo and favicon by specifying their 
+paths in your `mkdocs.yml`. SVG favicons are recommended for better scalability 
+and quality.
+```yaml
+theme:
+  name: cloudmesh-ai-theme
+  logo: assets/my-logo.png
+  favicon: assets/my-favicon.svg
+```
+
+### Alternative: Manual Asset Deployment
+
+If you need direct access to the CSS and image files within your project 
+directory (e.g., for further local overrides), you can deploy the assets 
+manually.
+
+1. **Run the deployment command**:
+   ```bash
+   cloudmesh-ai-theme-install
+   ```
+   This will copy the assets into `docs/theme/` in your current project.
+
+2. **Reference assets in `mkdocs.yml`**:
+   ```yaml
+   extra_css:
+     - theme/custom.css
+
+   theme:
+     favicon: theme/assets/favicon.svg
+     logo: theme/assets/logo-white.png
+     name: material
+   ```
+
+---
+
+## Development & Contribution
+
+### Local Development
+
+To make changes to the theme and see them reflected in your projects 
+immediately, install the package in editable mode:
+
+```bash
+cd cloudmesh-ai-theme
+pip install -e .
+```
+
+### Running Tests
+
+The theme includes a verification suite to ensure that the package builds and 
+renders correctly.
+
+```bash
+cd cloudmesh-ai-theme/tests
+python test_theme.py
+```
+
+---
+
+## Maintainer's Guide
+
+### Project Structure
+
+```text
+cloudmesh-ai-theme/
+├── .github/workflows/  # CI/CD pipelines
+├── src/
+│   └── cloudmesh_ai_theme/
+│       ├── __init__.py  # Package logic & versioning
+│       ├── assets/      # Logos and favicons
+│       ├── css/         # Custom stylesheets
+│       └── theme/       # MkDocs templates (main.html)
+├── tests/              # Verification suite
+├── VERSION             # Single source of truth for version
+├── pyproject.toml      # Build system & metadata
+└── README.md           # This guide
+```
+
+### Version Management
+
+The version is managed in the `VERSION` file at the root of the repository. To 
+bump the version:
+1. Edit the `VERSION` file (e.g., change `0.1.0` to `0.1.1`).
+2. Commit the change:
+   ```bash
+   git add VERSION
+   git commit -m "Bump version to 0.1.1"
+   ```
+
+### Release Process
+
+Releases are automated via GitHub Actions. To trigger a new release:
+1. Create a git tag following the `v*` pattern:
+   ```bash
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+2. The GitHub Action will automatically build the `.whl` and `.tar.gz` 
+distributions and upload them as artifacts.
+
+#### Publishing to PyPI
+
+The easiest way to upload the package to PyPI is using the provided `Makefile`:
+
+```bash
+make pypi
+```
+
+This command automatically installs the necessary build tools, builds the 
+distribution, and uploads it to PyPI using `twine`.
+
+**Manual Upload (without Makefile):**
+1. Install build tools:
+   ```bash
+   pip install build twine
+   ```
+2. Build the distribution:
+   ```bash
+   python -m build
+   ```
+3. Upload to PyPI:
+   ```bash
+   python -m twine upload dist/*
+   ```
+
+**Automated Upload (GitHub Actions):**
+To automate publishing, add a `pypi-publish` step to the 
+`.github/workflows/release.yml` file and configure a `PYPI_API_TOKEN` in your 
+GitHub repository secrets.
+=============================
+
+=============================
+VERSION
+---------------------------------------
+0.1.0
+=============================
+
+=============================
+a
+---------------------------------------
+/Users/grey/work/cloudmesh-ai-theme
+├── .github
+│   └── workflows
+│       └── release.yml
+├── .gitignore
+├── MANIFEST.in
+├── Makefile
+├── README.md
+├── VERSION
+├── a
+├── cloudmesh_ai_theme
+│   ├── __init__.py
+│   ├── assets
+│   │   ├── favicon copy.ico
+│   │   ├── favicon.svg
+│   │   └── logo-white.png
+│   ├── css
+│   │   └── custom.css
+│   ├── theme
+│   │   └── main.html
+│   └── theme.yml
+├── cloudmesh_ai_theme.egg-info
+│   ├── SOURCES.txt
+│   ├── dependency_links.txt
+│   ├── entry_points.txt
+│   └── top_level.txt
+├── pyproject.toml
+├── setup.py
+└── tools
+    ├── convert_to_ico.py
+    └── generate_favicon.py
+
+File Contents:
+=============================
+release.yml
+---------------------------------------
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+=============================
+
+=============================
+.gitignore
+---------------------------------------
+__pycache__/
+*.py
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+site/
+=============================
+
+=============================
+MANIFEST.in
+---------------------------------------
+recursive-include cloudmesh_ai_theme/assets *
+recursive-include cloudmesh_ai_theme/css *
+recursive-include cloudmesh_ai_theme/theme *
+include cloudmesh_ai_theme/theme.yml
+=============================
+
+=============================
+Makefile
+---------------------------------------
+.PHONY: help pypi test view clean
+
+# Default target
+all: test
+
+help:
+        @echo "Available targets:"
+        @echo "  all    - Run tests (default)"
+        @echo "  pypi   - Install build tools, build package, and upload to
+PyPI"
+        @echo "  test   - Run theme verification tests"
+        @echo "  view   - Start mkdocs serve for the test site"
+        @echo "  clean  - Remove build artifacts"
+
+# Build and upload to PyPI
+pypi:
+        pip install build twine
+        python3 -m build
+        python3 -m twine upload dist/*
+
+# Run theme verification tests
+test:
+        python3 tests/test_theme.py
+
+# Start mkdocs serve for the test site
+view:
+        pip install -e .
+        mkdocs serve --livereload -f tests/mkdocs.yml
+
+# Clean build artifacts
+clean:
+        rm -rf build/
+        rm -rf dist/
+        rm -rf *.egg-info
+=============================
+
+=============================
+README.md
+---------------------------------------
+# Cloudmesh AI Theme Guide
+
+Welcome to the guide for the **Cloudmesh AI Theme**. This package provides a
+consistent look and feel for Cloudmesh AI project documentation, built as an
+extension of the Material for MkDocs theme.
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage-guide)
+  - [Primary Method (Recommended)](#primary-method-recommended)
+  - [Configuration Options](#configuration-options)
+  - [Alternative: Manual Asset Deployment](#alternative-manual-asset-deployment)
+- [Development & Contribution](#development--contribution)
+  - [Local Development](#local-development)
+  - [Running Tests](#running-tests)
+- [Maintainer's Guide](#maintainers-guide)
+  - [Project Structure](#project-structure)
+  - [Version Management](#version-management)
+  - [Release Process](#release-process)
+
+---
+
+## Introduction
+
+The `cloudmesh-ai-theme` is a Python package that provides branding for
+Cloudmesh AI documentation. Instead of copying CSS and images into every
+project, this package allows you to apply the theme via a configuration change
+in your `mkdocs.yml`.
+
+It automatically handles:
+- **Branding**: Injects the "Cloudmesh AI" site name and a standardized footer.
+- **Styling**: Applies custom CSS.
+- **Assets**: Provides shared logos and favicons.
+
+---
+
+## Installation
+
+The theme is distributed as a Python package. You can install it using `pip`:
+
+```bash
+pip install cloudmesh-ai-theme
+```
+
+---
+
+## Usage
+
+### Primary Method (Recommended)
+
+The simplest way to use the theme is to specify it by name in your `mkdocs.yml`
+file. This method automatically applies all branding, styles, and assets.
+
+```yaml
+theme:
+  name: cloudmesh-ai-theme
+```
+
+### Configuration Options
+
+You can customize the theme while maintaining the Cloudmesh AI layout.
+Currently, the following options are supported:
+
+#### `primary_color`
+Change the primary accent color of the theme.
+```yaml
+theme:
+  name: cloudmesh-ai-theme
+  primary_color: "#ff0000" # Example: Red
+```
+
+#### `logo` and `favicon`
+You can override the default Cloudmesh AI logo and favicon by specifying their
+paths in your `mkdocs.yml`. SVG favicons are recommended for better scalability
+and quality.
+```yaml
+theme:
+  name: cloudmesh-ai-theme
+  logo: assets/my-logo.png
+  favicon: assets/my-favicon.svg
+```
+
+### Alternative: Manual Asset Deployment
+
+If you need direct access to the CSS and image files within your project
+directory (e.g., for further local overrides), you can deploy the assets
+manually.
+
+1. **Run the deployment command**:
+   ```bash
+   cloudmesh-ai-theme-install
+   ```
+   This will copy the assets into `docs/theme/` in your current project.
+
+2. **Reference assets in `mkdocs.yml`**:
+   ```yaml
+   extra_css:
+     - theme/custom.css
+
+   theme:
+     favicon: theme/assets/favicon.svg
+     logo: theme/assets/logo-white.png
+     name: material
+   ```
+
+---
+
+## Development & Contribution
+
+### Local Development
+
+To make changes to the theme and see them reflected in your projects
+immediately, install the package in editable mode:
+
+```bash
+cd cloudmesh-ai-theme
+pip install -e .
+```
+
+### Running Tests
+
+The theme includes a verification suite to ensure that the package builds and
+renders correctly.
+
+```bash
+cd cloudmesh-ai-theme/tests
+python test_theme.py
+```
+
+---
+
+## Maintainer's Guide
+
+### Project Structure
+
+```text
+cloudmesh-ai-theme/
+├── .github/workflows/  # CI/CD pipelines
+├── src/
+│   └── cloudmesh_ai_theme/
+│       ├── __init__.py  # Package logic & versioning
+│       ├── assets/      # Logos and favicons
+│       ├── css/         # Custom stylesheets
+│       └── theme/       # MkDocs templates (main.html)
+├── tests/              # Verification suite
+├── VERSION             # Single source of truth for version
+├── pyproject.toml      # Build system & metadata
+└── README.md           # This guide
+```
+
+### Version Management
+
+The version is managed in the `VERSION` file at the root of the repository. To
+bump the version:
+1. Edit the `VERSION` file (e.g., change `0.1.0` to `0.1.1`).
+2. Commit the change:
+   ```bash
+   git add VERSION
+   git commit -m "Bump version to 0.1.1"
+   ```
+
+### Release Process
+
+Releases are automated via GitHub Actions. To trigger a new release:
+1. Create a git tag following the `v*` pattern:
+   ```bash
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+2. The GitHub Action will automatically build the `.whl` and `.tar.gz`
+distributions and upload them as artifacts.
+
+#### Publishing to PyPI
+
+The easiest way to upload the package to PyPI is using the provided `Makefile`:
+
+```bash
+make pypi
+```
+
+This command automatically installs the necessary build tools, builds the
+distribution, and uploads it to PyPI using `twine`.
+
+**Manual Upload (without Makefile):**
+1. Install build tools:
+   ```bash
+   pip install build twine
+   ```
+2. Build the distribution:
+   ```bash
+   python -m build
+   ```
+3. Upload to PyPI:
+   ```bash
+   python -m twine upload dist/*
+   ```
+
+**Automated Upload (GitHub Actions):**
+To automate publishing, add a `pypi-publish` step to the
+`.github/workflows/release.yml` file and configure a `PYPI_API_TOKEN` in your
+GitHub repository secrets.
+=============================
+
+=============================
+VERSION
+---------------------------------------
+0.1.0
+=============================
+
+=============================
+
+=============================
+__init__.py
+---------------------------------------
+import os
+import shutil
+from pathlib import Path
+
+# Read version from VERSION file
+VERSION_FILE = Path(__file__).parent.parent / "VERSION"
+if VERSION_FILE.exists():
+    __version__ = VERSION_FILE.read_text().strip()
+else:
+    __version__ = "0.1.0"
+
+def install_assets(target_dir="docs/theme"):
+    """
+    Copies the theme assets and CSS from the package to the target directory.
+    """
+    package_dir = Path(__file__).parent
+    assets_src = package_dir / "assets"
+    css_src = package_dir / "css"
+
+    target_path = Path(target_dir)
+    target_path.mkdir(parents=True, exist_ok=True)
+
+    # Copy assets
+    if assets_src.exists():
+        shutil.copytree(assets_src, target_path / "assets", dirs_exist_ok=True)
+        print(f"Copied assets to {target_path}/assets")
+
+    # Copy CSS
+    if css_src.exists():
+        # We want to copy the files inside css/ to the target_path root or a css
+subfolder
+        # To keep it consistent with the submodule approach (theme/custom.css),
+        # we copy the contents of css/ directly into target_path
+        for item in css_src.iterdir():
+            shutil.copy2(item, target_path / item.name)
+            print(f"Copied {item.name} to {target_path}/{item.name}")
+
+if __name__ == "__main__":
+    install_assets()
+=============================
+
+
+=============================
+favicon.svg
+---------------------------------------
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" 
+height="512">
+  <defs>
+    <linearGradient id="cloudBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e90ff"/>
+      <stop offset="100%" stop-color="#006dff"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" 
+flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Transparent Background -->
+  <rect width="512" height="512" fill="transparent"/>
+
+  <!-- Cloud -->
+  <g filter="url(#shadow)">
+    <path
+      d="
+        M95 400
+        H417
+        C470 400 502 362 502 307
+        C502 258 468 223 423 223
+        H405
+        C390 138 326 92 255 92
+        C182 92 124 140 105 205
+        C53 210 18 248 18 305
+        C18 362 48 400 95 400
+        Z
+      "
+      fill="url(#cloudBlue)"
+    />
+  </g>
+
+  <!-- Perfectly Centered AI -->
+  <text
+    x="230"
+    y="285"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="245"
+    font-weight="900"
+    fill="#ffffff"
+    letter-spacing="-18">
+    AI
+  </text>
+</svg>
+=============================
+
+
+=============================
+custom.css
+---------------------------------------
+.doc-object {
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    border-radius: 4px !important;
+    padding: 0.5rem !important;
+    margin: 0.5rem 0 !important;
+    background-color: var(--md-code-bg-color, #ffffff) !important;
+}
+
+ .doc-object {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+=============================
+
+=============================
+main.html
+---------------------------------------
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ path.rel_path('theme/custom.css') }}">
+  {% if theme.primary_color %}
+  <style>
+    :root {
+      --md-primary-color: {{ theme.primary_color }};
+    }
+  </style>
+  {% endif %}
+{% endblock %}
+
+{% block site_name %}
+  <a href="{{ 'home'|url }}" class="site-title">
+    {% if theme.logo %}
+      <img src="{{ theme.logo }}" alt="Logo">
+    {% else %}
+      Cloudmesh AI
+    {% endif %}
+  </a>
+{% endblock %}
+
+{% block footer %}
+  {{ super() }}
+  <div class="footer-branding" style="text-align: center; padding: 1em; 
+font-size: 0.8em; opacity: 0.7;">
+    &copy; {{ now().year }} Cloudmesh AI. All rights reserved.
+  </div>
+{% endblock %}
+=============================
+
+=============================
+theme.yml
+---------------------------------------
+base_theme: material
+=============================
+
+=============================
+SOURCES.txt
+---------------------------------------
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+./cloudmesh_ai_theme/__init__.py
+./cloudmesh_ai_theme/theme.yml
+./cloudmesh_ai_theme/assets/favicon copy.ico
+./cloudmesh_ai_theme/assets/favicon.svg
+./cloudmesh_ai_theme/assets/logo-white.png
+./cloudmesh_ai_theme/css/custom.css
+./cloudmesh_ai_theme/theme/main.html
+cloudmesh_ai_theme/__init__.py
+cloudmesh_ai_theme/theme.yml
+cloudmesh_ai_theme.egg-info/PKG-INFO
+cloudmesh_ai_theme.egg-info/SOURCES.txt
+cloudmesh_ai_theme.egg-info/dependency_links.txt
+cloudmesh_ai_theme.egg-info/entry_points.txt
+cloudmesh_ai_theme.egg-info/top_level.txt
+cloudmesh_ai_theme/assets/favicon copy.ico
+cloudmesh_ai_theme/assets/favicon.svg
+cloudmesh_ai_theme/assets/logo-white.png
+cloudmesh_ai_theme/css/custom.css
+cloudmesh_ai_theme/theme/main.html
+tests/test_theme.py
+=============================
+
+=============================
+dependency_links.txt
+---------------------------------------
+
+=============================
+
+=============================
+entry_points.txt
+---------------------------------------
+
+cloudmesh-ai-theme-install = cloudmesh_ai_theme:install_assets
+
+
+cloudmesh-ai-theme = cloudmesh_ai_theme
+=============================
+
+=============================
+top_level.txt
+---------------------------------------
+cloudmesh_ai_theme
+=============================
+
+=============================
+pyproject.toml
+---------------------------------------
+
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+name = "cloudmesh-ai-theme"
+dynamic = ["version"]
+description = "Theme for Cloudmesh AI documentation"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+
+include-package-data = true
+packages = ["cloudmesh_ai_theme"]
+
+
+version = {attr = "cloudmesh_ai_theme.__version__"}
+
+
+"*" = ["*.yml", "*.css", "*.svg", "*.png", "*.ico"]
+cloudmesh_ai_theme = ["assets/*", "css/*", "theme/*", "theme.yml"]
+
+
+cloudmesh-ai-theme-install = "cloudmesh_ai_theme:install_assets"
+
+
+cloudmesh-ai-theme = "cloudmesh_ai_theme"
+=============================
+
+=============================
+setup.py
+---------------------------------------
+from setuptools import setup, find_packages
+
+setup(
+    package_dir={"": "."},
+    packages=find_packages(),
+    include_package_data=True,
+    package_data={
+        "cloudmesh_ai_theme": ["assets/*", "css/*", "theme/*", "theme.yml"],
+    },
+)
+=============================
+
+=============================
+convert_to_ico.py
+---------------------------------------
+from PIL import Image
+import os
+
+def convert_png_to_ico(input_path, output_path):
+    print(f"Converting {input_path} to {output_path}...")
+    try:
+        img = Image.open(input_path)
+        # Save as ICO with standard sizes
+        img.save(output_path, format="ICO", sizes=[(16, 16), (32, 32), (48, 48),
+(64, 64)])
+        print("Conversion successful!")
+    except Exception as e:
+        print(f"Error during conversion: {e}")
+
+if __name__ == "__main__":
+    input_file = "cloudmesh_ai_theme/assets/favicon-2.png"
+    output_file = "cloudmesh_ai_theme/assets/favicon.ico"
+    convert_png_to_ico(input_file, output_file)
+=============================
+
+=============================
+generate_favicon.py
+---------------------------------------
+from PIL import Image
+import os
+
+def create_favicon(input_path, output_path):
+    print(f"Processing {input_path}...")
+    img = Image.open(input_path).convert("RGBA")
+    datas = img.getdata()
+
+    # Find the most common color to treat as background
+    color_counts = {}
+    for item in datas:
+        color_counts = color_counts.get(item, 0) + 1
+
+    bg_color = max(color_counts, key=color_counts.get)
+    print(f"Detected background color: {bg_color}")
+
+    new_data = []
+    for item in datas:
+        # Make background transparent
+        if item == bg_color:
+            new_data.append((0, 0, 0, 0))
+            continue
+
+        # Calculate brightness to distinguish between clouds and text
+        # item is (R, G, B, A)
+        brightness = (item[0] * 299 + item[1] * 587 + item[2] * 114) / 1000
+
+        if brightness > 128:
+            # Light color -> White cloud
+            new_data.append((255, 255, 255, 255))
+        else:
+            # Dark color -> Black AI text
+            new_data.append((0, 0, 0, 255))
+
+    img.putdata(new_data)
+
+    # Save as ICO
+    img.save(output_path, format="ICO", sizes=[(16, 16), (32, 32), (48, 48), 
+(64, 64)])
+    print(f"Saved favicon to {output_path}")
+
+if __name__ == "__main__":
+    input_file = "cloudmesh_ai_theme/assets/favicon.png"
+    output_file = "cloudmesh_ai_theme/assets/favicon.ico"
+    create_favicon(input_file, output_file)
+=============================
+

@@ -2,6 +2,29 @@ import subprocess
 import os
 from pathlib import Path
 
+def test_install_assets_import():
+    """
+    Verifies that the package can be imported and install_assets can be called.
+    """
+    try:
+        from cloudmesh_ai_theme import install_assets
+        print("Successfully imported install_assets from cloudmesh_ai_theme")
+        
+        # Test calling it with a temporary directory
+        test_assets_dir = Path("test_assets_output")
+        install_assets(target_dir=str(test_assets_dir))
+        
+        if test_assets_dir.exists():
+            print("install_assets successfully created target directory")
+            # Cleanup
+            import shutil
+            shutil.rmtree(test_assets_dir)
+            return True
+        return False
+    except ImportError as e:
+        print(f"Import failed: {e}")
+        return False
+
 def test_theme_build():
     """
     Verifies that the theme can be installed and used to build a site.
@@ -45,7 +68,16 @@ def test_theme_build():
     return True
 
 if __name__ == "__main__":
-    if test_theme_build():
+    success = True
+    if not test_install_assets_import():
+        print("Import test failed!")
+        success = False
+    
+    if not test_theme_build():
+        print("Build test failed!")
+        success = False
+        
+    if success:
         print("SUCCESS")
     else:
         print("FAILURE")
