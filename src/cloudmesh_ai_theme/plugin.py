@@ -35,8 +35,9 @@ class CloudmeshAIThemePlugin(BasePlugin):
 
         # Handle Assets (Logo/Favicon)
         # We copy assets to the docs directory so MkDocs can find them
+        # Use docs/assets/theme to avoid triggering MkDocs custom theme override (docs/theme)
         docs_dir = Path(config["docs_dir"])
-        assets_dst = docs_dir / "theme" / "assets"
+        assets_dst = docs_dir / "assets" / "theme"
         assets_dst.mkdir(parents=True, exist_ok=True)
 
         # Default assets from package
@@ -53,8 +54,8 @@ class CloudmeshAIThemePlugin(BasePlugin):
             print(f"CloudmeshAIThemePlugin: Failed to copy assets: {e}")
 
         # Set branding
-        logo_path = self.config["logo"] or f"theme/assets/{default_logo}"
-        favicon_path = self.config["favicon"] or f"theme/assets/{default_favicon}"
+        logo_path = self.config["logo"] or f"assets/theme/{default_logo}"
+        favicon_path = self.config["favicon"] or f"assets/theme/{default_favicon}"
         
         theme["logo"] = logo_path
         theme["favicon"] = favicon_path
