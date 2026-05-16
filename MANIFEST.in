@@ -2,3 +2,4 @@ recursive-include cloudmesh_ai_theme/assets *
 recursive-include cloudmesh_ai_theme/css *
 recursive-include cloudmesh_ai_theme/theme *
 include cloudmesh_ai_theme/theme.yml
+include VERSION
