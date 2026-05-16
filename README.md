@@ -64,12 +64,12 @@ theme:
 ```
 
 #### `logo` and `favicon`
-You can override the default Cloudmesh AI logo and favicon by specifying their paths in your `mkdocs.yml`.
+You can override the default Cloudmesh AI logo and favicon by specifying their paths in your `mkdocs.yml`. SVG favicons are recommended for better scalability and quality.
 ```yaml
 theme:
   name: cloudmesh-ai-theme
   logo: assets/my-logo.png
-  favicon: assets/my-favicon.ico
+  favicon: assets/my-favicon.svg
 ```
 
 ### Alternative: Manual Asset Deployment
@@ -88,7 +88,7 @@ If you need direct access to the CSS and image files within your project directo
      - theme/custom.css
 
    theme:
-     favicon: theme/assets/favicon.ico
+     favicon: theme/assets/favicon.svg
      logo: theme/assets/logo-white.png
      name: material
    ```
