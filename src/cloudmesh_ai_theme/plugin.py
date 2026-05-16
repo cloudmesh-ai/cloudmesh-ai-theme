@@ -1,5 +1,11 @@
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
+import shutil
+from pathlib import Path
+try:
+    from importlib import resources
+except ImportError:
+    import importlib_resources as resources
 
 
 class CloudmeshAIThemePlugin(BasePlugin):
@@ -27,12 +33,31 @@ class CloudmeshAIThemePlugin(BasePlugin):
         # Ensure Material theme baseline
         theme["name"] = theme.get("name", "material")
 
-        # Branding defaults
-        if self.config["logo"]:
-            theme["logo"] = self.config["logo"]
+        # Handle Assets (Logo/Favicon)
+        # We copy assets to the docs directory so MkDocs can find them
+        docs_dir = Path(config["docs_dir"])
+        assets_dst = docs_dir / "theme" / "assets"
+        assets_dst.mkdir(parents=True, exist_ok=True)
 
-        if self.config["favicon"]:
-            theme["favicon"] = self.config["favicon"]
+        # Default assets from package
+        default_logo = "logo-white.png"
+        default_favicon = "favicon.svg"
+
+        try:
+            # Copy assets from package to docs/theme/assets
+            for asset in [default_logo, default_favicon]:
+                source = resources.files("cloudmesh_ai_theme.assets").joinpath(asset)
+                target = assets_dst / asset
+                shutil.copy2(source, target)
+        except Exception as e:
+            print(f"CloudmeshAIThemePlugin: Failed to copy assets: {e}")
+
+        # Set branding
+        logo_path = self.config["logo"] or f"theme/assets/{default_logo}"
+        favicon_path = self.config["favicon"] or f"theme/assets/{default_favicon}"
+        
+        theme["logo"] = logo_path
+        theme["favicon"] = favicon_path
 
         # Inject palette safely (do not overwrite user config)
         theme.setdefault("palette", [
@@ -40,25 +65,25 @@ class CloudmeshAIThemePlugin(BasePlugin):
                 "scheme": "default",
                 "primary": self.config["primary_color"],
                 "accent": self.config["primary_color"],
-                "toggle": {
-                    "icon": "brightness-7",
-                    "name": "Switch to dark mode",
-                },
             },
             {
                 "scheme": "slate",
                 "primary": self.config["primary_color"],
                 "accent": self.config["primary_color"],
-                "toggle": {
-                    "icon": "brightness-4",
-                    "name": "Switch to light mode",
-                },
             },
         ])
 
-        # Inject CSS via MkDocs native mechanism
-        if self.config["inject_css"]:
-            config.setdefault("extra_css", [])
-            config["extra_css"].append("cloudmesh_ai_theme/custom.css")
-
         return config
+
+    def on_page_content(self, html, page, config, files):
+        if not self.config["inject_css"]:
+            return html
+
+        try:
+            # Read CSS from the package resources
+            css_content = resources.files("cloudmesh_ai_theme.css").joinpath("custom.css").read_text(encoding="utf-8")
+            style_tag = f"\n<style>\n{css_content}\n</style>\n"
+            return style_tag + html
+        except Exception as e:
+            print(f"CloudmeshAIThemePlugin: Failed to inject CSS: {e}")
+            return html

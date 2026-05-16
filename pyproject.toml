@@ -27,9 +27,6 @@ Homepage = "https://github.com/cloudmesh/cloudmesh-ai-theme"
 [project.entry-points."mkdocs.plugins"]
 cloudmesh-ai-theme = "cloudmesh_ai_theme.plugin:CloudmeshAIThemePlugin"
 
-# CLI entry point (modern replacement for setup.py + entry_points.txt)
-[project.scripts]
-cloudmesh-ai-theme-install = "cloudmesh_ai_theme:install_assets"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

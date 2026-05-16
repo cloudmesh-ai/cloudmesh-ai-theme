@@ -3,12 +3,14 @@
 │   └── workflows
 │       └── release.yml
 ├── .gitignore
+├── .release_state.json
 ├── MANIFEST.in
 ├── Makefile
 ├── README.md
 ├── VERSION
 ├── a
 ├── pyproject.toml
+├── release_7.0.1.log
 ├── src
 │   ├── cloudmesh_ai_theme
 │   │   ├── __init__.py
@@ -20,6 +22,7 @@
 │   │   │   └── custom.css
 │   │   ├── plugin.py
 │   │   ├── theme
+│   │   │   ├── __init__.py
 │   │   │   └── main.html
 │   │   └── theme.yml
 │   └── cloudmesh_ai_theme.egg-info
@@ -69,14 +72,6 @@ jobs:
           name: dist
           path: dist/
 
-      # OPTIONAL: PyPI publish
-      # - name: Publish to PyPI
-      #   run: |
-      #     pip install twine
-      #     python -m twine upload dist/*
-      #   env:
-      #     TWINE_USERNAME: __token__
-      #     TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
 =============================
 
 =============================
@@ -108,12 +103,28 @@ htmlcov/
 =============================
 
 =============================
+.release_state.json
+---------------------------------------
+{
+    "package_name": "cloudmesh-ai-theme",
+    "baseline_commit": "4e8456772ce6cb4da1363bc8d77f7574fef72bd9",
+    "original_version": null,
+    "created_tag": "v7.0.2.dev1",
+    "completed_steps": [
+        "testpypi"
+    ],
+    "start_time": "2026-05-16T07:32:10.055642"
+}
+=============================
+
+=============================
 MANIFEST.in
 ---------------------------------------
 recursive-include cloudmesh_ai_theme/assets *
 recursive-include cloudmesh_ai_theme/css *
 recursive-include cloudmesh_ai_theme/theme *
 include cloudmesh_ai_theme/theme.yml
+include VERSION
 =============================
 
 =============================
@@ -366,7 +377,7 @@ GitHub repository secrets.
 =============================
 VERSION
 ---------------------------------------
-0.1.0
+7.0.1
 =============================
 
 =============================
@@ -377,12 +388,14 @@ a
 │   └── workflows
 │       └── release.yml
 ├── .gitignore
+├── .release_state.json
 ├── MANIFEST.in
 ├── Makefile
 ├── README.md
 ├── VERSION
 ├── a
 ├── pyproject.toml
+├── release_7.0.1.log
 ├── src
 │   ├── cloudmesh_ai_theme
 │   │   ├── __init__.py
@@ -394,6 +407,7 @@ a
 │   │   │   └── custom.css
 │   │   ├── plugin.py
 │   │   ├── theme
+│   │   │   ├── __init__.py
 │   │   │   └── main.html
 │   │   └── theme.yml
 │   └── cloudmesh_ai_theme.egg-info
@@ -443,14 +457,6 @@ jobs:
           name: dist
           path: dist/
 
-      # OPTIONAL: PyPI publish
-      # - name: Publish to PyPI
-      #   run: |
-      #     pip install twine
-      #     python -m twine upload dist/*
-      #   env:
-      #     TWINE_USERNAME: __token__
-      #     TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
 =============================
 
 =============================
@@ -482,12 +488,28 @@ htmlcov/
 =============================
 
 =============================
+.release_state.json
+---------------------------------------
+{
+    "package_name": "cloudmesh-ai-theme",
+    "baseline_commit": "4e8456772ce6cb4da1363bc8d77f7574fef72bd9",
+    "original_version": null,
+    "created_tag": "v7.0.2.dev1",
+    "completed_steps": [
+        "testpypi"
+    ],
+    "start_time": "2026-05-16T07:32:10.055642"
+}
+=============================
+
+=============================
 MANIFEST.in
 ---------------------------------------
 recursive-include cloudmesh_ai_theme/assets *
 recursive-include cloudmesh_ai_theme/css *
 recursive-include cloudmesh_ai_theme/theme *
 include cloudmesh_ai_theme/theme.yml
+include VERSION
 =============================
 
 =============================
@@ -740,7 +762,7 @@ GitHub repository secrets.
 =============================
 VERSION
 ---------------------------------------
-0.1.0
+7.0.1
 =============================
 
 =============================
@@ -777,6 +799,9 @@ Homepage = "https://github.com/cloudmesh/cloudmesh-ai-theme"
 
 cloudmesh-ai-theme = "cloudmesh_ai_theme.plugin:CloudmeshAIThemePlugin"
 
+
+cloudmesh-ai-theme = "cloudmesh_ai_theme"
+
 # CLI entry point (modern replacement for setup.py + entry_points.txt)
 
 cloudmesh-ai-theme-install = "cloudmesh_ai_theme:install_assets"
@@ -801,45 +826,251 @@ cloudmesh_ai_theme = [
 =============================
 
 =============================
+release_7.0.1.log
+---------------------------------------
+Release Log for cloudmesh-ai-theme version 7.0.1
+Started at: 2026-05-16T07:32:15.258766
+----------------------------------------
+[2026-05-16 07:32:15] DEBUG: Executing: git describe --tags --abbrev=0
+STDOUT:
+v7.0.0
+
+[2026-05-16 07:32:15] DEBUG: Generating changelog for v7.0.0..HEAD...
+[2026-05-16 07:32:15] DEBUG: Executing: git log v7.0.0..HEAD --oneline 
+--no-merges
+STDOUT:
+4e84567 Enable PyPI publishing in release workflow
+
+[2026-05-16 07:32:16] INFO: Creating baseline git commit...
+[2026-05-16 07:32:16] DEBUG: Executing: git rev-parse HEAD
+STDOUT:
+4e8456772ce6cb4da1363bc8d77f7574fef72bd9
+
+[2026-05-16 07:32:16] DEBUG: Executing: git describe --tags --always --dirty
+STDOUT:
+v7.0.0-1-g4e84567
+
+[2026-05-16 07:32:16] DEBUG: Executing: git add .
+[2026-05-16 07:32:16] DEBUG: Executing: git commit -m Baseline for release 
+7.0.0-1-g4e84567
+STDOUT:
+ Baseline for release 7.0.0-1-g4e84567
+ 1 file changed, 22 insertions(+)
+ create mode 100644 release_7.0.1.log
+
+[2026-05-16 07:32:21] INFO: Bumping version to 7.0.1.dev1...
+[2026-05-16 07:32:21] DEBUG: Executing: git rev-parse v7.0.1.dev1
+STDERR:
+fatal: ambiguous argument 'v7.0.1.dev1': unknown revision or path not in the 
+working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+[2026-05-16 07:32:21] INFO: Creating git tag v7.0.1.dev1...
+[2026-05-16 07:32:21] DEBUG: Executing: git tag -a v7.0.1.dev1 -m Release 
+7.0.1.dev1
+[2026-05-16 07:32:21] DEBUG: Executing: git push origin v7.0.1.dev1
+[2026-05-16 07:32:22] INFO: Building package artifacts...
+[2026-05-16 07:32:22] DEBUG: Executing: 
+/Users/grey/.pyenv/versions/3.14.4/bin/python -m pip wheel . -w dist --no-deps 
+--no-build-isolation
+STDOUT:
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: cloudmesh-ai-theme
+  Building wheel for cloudmesh-ai-theme (pyproject.toml): started
+  Building wheel for cloudmesh-ai-theme (pyproject.toml): finished with status 
+'done'
+  Created wheel for cloudmesh-ai-theme: 
+filename=cloudmesh_ai_theme-7.0.1.dev1-py3-none-any.whl size=27572 
+sha256=9dfb608f8da4ea8658e04557b03d2a8086562d1e3d2ff19e5dfacbcdc5fcee30
+  Stored in directory: 
+/Users/grey/Library/Caches/pip/wheels/40/fa/73/b6df7098dea951cca6a4cb191347b99f7
+807b7d8af8cc0672d
+Successfully built cloudmesh-ai-theme
+
+[2026-05-16 07:32:23] INFO: Verified artifact: 
+cloudmesh_ai_theme-7.0.1.dev1-py3-none-any.whl
+[2026-05-16 07:32:23] INFO: Uploading to testpypi...
+[2026-05-16 07:32:23] DEBUG: Executing: twine --no-color upload --repository 
+testpypi 
+/Users/grey/work/cloudmesh-ai-theme/dist/cloudmesh_ai_theme-7.0.1.dev1-py3-none-
+any.whl
+STDOUT:
+Uploading distributions to https://test.pypi.org/legacy/
+Uploading cloudmesh_ai_theme-7.0.1.dev1-py3-none-any.whl
+[?25l
+[2K  0%                                          0.0/35.3 kB • --:-- • ?
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 kB • 00:00 • 157.3 
+MB/s
+[?25h
+View at:
+https://test.pypi.org/project/cloudmesh-ai-theme/7.0.1.dev1/
+
+[2026-05-16 07:32:29] INFO: TestPyPI verification successful.
+[2026-05-16 07:32:30] INFO: Bumping version to 7.0.1...
+[2026-05-16 07:32:30] DEBUG: Executing: git rev-parse v7.0.1
+STDERR:
+fatal: ambiguous argument 'v7.0.1': unknown revision or path not in the working 
+tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+[2026-05-16 07:32:30] INFO: Creating git tag v7.0.1...
+[2026-05-16 07:32:30] DEBUG: Executing: git tag -a v7.0.1 -m Release 7.0.1
+[2026-05-16 07:32:30] DEBUG: Executing: git push origin v7.0.1
+[2026-05-16 07:32:31] INFO: Building package artifacts...
+[2026-05-16 07:32:31] DEBUG: Cleaning up old artifacts in dist directory...
+[2026-05-16 07:32:31] DEBUG: Executing: 
+/Users/grey/.pyenv/versions/3.14.4/bin/python -m pip wheel . -w dist --no-deps 
+--no-build-isolation
+STDOUT:
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: cloudmesh-ai-theme
+  Building wheel for cloudmesh-ai-theme (pyproject.toml): started
+  Building wheel for cloudmesh-ai-theme (pyproject.toml): finished with status 
+'done'
+  Created wheel for cloudmesh-ai-theme: 
+filename=cloudmesh_ai_theme-7.0.1-py3-none-any.whl size=27514 
+sha256=88f7469ce7b5803f7b0ab874f3e674b2cef980c7b7cc002e8bb75bb0ef1b2247
+  Stored in directory: 
+/Users/grey/Library/Caches/pip/wheels/40/fa/73/b6df7098dea951cca6a4cb191347b99f7
+807b7d8af8cc0672d
+Successfully built cloudmesh-ai-theme
+
+[2026-05-16 07:32:32] INFO: Verified artifact: 
+cloudmesh_ai_theme-7.0.1-py3-none-any.whl
+[2026-05-16 07:32:35] INFO: Uploading to pypi...
+[2026-05-16 07:32:35] DEBUG: Executing: twine --no-color upload 
+/Users/grey/work/cloudmesh-ai-theme/dist/cloudmesh_ai_theme-7.0.1-py3-none-any.w
+hl
+STDOUT:
+Uploading distributions to https://upload.pypi.org/legacy/
+Uploading cloudmesh_ai_theme-7.0.1-py3-none-any.whl
+[?25l
+[2K  0%                                          0.0/35.2 kB • --:-- • ?
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[2K100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.2/35.2 kB • 00:00 • 137.4 
+MB/s
+[?25h
+View at:
+https://pypi.org/project/cloudmesh-ai-theme/7.0.1/
+
+[2026-05-16 07:32:37] INFO: Official PyPI release complete!
+[2026-05-16 07:32:37] INFO: Post-release: Preparing next cycle 7.0.2...
+[2026-05-16 07:32:37] DEBUG: Executing: git rev-parse v7.0.2
+STDERR:
+fatal: ambiguous argument 'v7.0.2': unknown revision or path not in the working 
+tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+[2026-05-16 07:32:37] INFO: Creating git tag v7.0.2...
+[2026-05-16 07:32:37] DEBUG: Executing: git tag -a v7.0.2 -m Release 7.0.2
+[2026-05-16 07:32:37] DEBUG: Executing: git push origin v7.0.2
+[2026-05-16 07:32:38] DEBUG: Executing: git rev-parse v7.0.2.dev1
+STDERR:
+fatal: ambiguous argument 'v7.0.2.dev1': unknown revision or path not in the 
+working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+[2026-05-16 07:32:38] INFO: Creating git tag v7.0.2.dev1...
+[2026-05-16 07:32:38] DEBUG: Executing: git tag -a v7.0.2.dev1 -m Release 
+7.0.2.dev1
+[2026-05-16 07:32:38] DEBUG: Executing: git push origin v7.0.2.dev1
+[2026-05-16 07:32:39] INFO: Next release target set to v7.0.2 and dev version to
+v7.0.2.dev1
+=============================
+
+=============================
 __init__.py
 ---------------------------------------
 from importlib.metadata import version, PackageNotFoundError
 from pathlib import Path
-import shutil
 
-try:
-    __version__ = version("cloudmesh-ai-theme")
-except PackageNotFoundError:
-    __version__ = "0.0.0"
+def get_version():
+    # 1. Try to read from VERSION file in the package root (installed)
+    try:
+        version_file = Path(__file__).parent / "VERSION"
+        if version_file.exists():
+            return version_file.read_text().strip()
+    except Exception:
+        pass
 
+    # 2. Try to read from VERSION file in the project root (development)
+    try:
+        # __file__ is .../src/cloudmesh_ai_theme/__init__.py
+        # Project root is two levels up from src/
+        project_root_version = Path(__file__).parent.parent.parent / "VERSION"
+        if project_root_version.exists():
+            return project_root_version.read_text().strip()
+    except Exception:
+        pass
 
-def install_assets(target_dir="docs/theme"):
-    """
-    Copy theme assets and CSS into a target MkDocs directory.
-    """
-    package_dir = Path(__file__).parent
-    assets_src = package_dir / "assets"
-    css_src = package_dir / "css"
+    # 3. Fallback to importlib.metadata
+    try:
+        return version("cloudmesh-ai-theme")
+    except PackageNotFoundError:
+        return "0.0.0"
 
-    target_path = Path(target_dir)
-    target_path.mkdir(parents=True, exist_ok=True)
-
-    # Copy assets
-    if assets_src.exists():
-        shutil.copytree(
-            assets_src,
-            target_path / "assets",
-            dirs_exist_ok=True,
-        )
-
-    # Copy CSS files
-    if css_src.exists():
-        for item in css_src.iterdir():
-            shutil.copy2(item, target_path / item.name)
-
-
-if __name__ == "__main__":
-    install_assets()
+__version__ = get_version()
 =============================
 
 
@@ -919,57 +1150,71 @@ custom.css
 plugin.py
 ---------------------------------------
 from mkdocs.plugins import BasePlugin
-from pathlib import Path
-from . import install_assets
+from mkdocs.config import config_options
+
 
 class CloudmeshAIThemePlugin(BasePlugin):
     """
-    MkDocs plugin to automatically install Cloudmesh AI theme assets.
+    Clean MkDocs plugin:
+    - Injects branding defaults
+    - Configures theme safely
+    - Does NOT modify filesystem
     """
 
+    config_scheme = (
+        ("primary_color", config_options.Type(str, default="#1e90ff")),
+        ("logo", config_options.Type(str, default=None)),
+        ("favicon", config_options.Type(str, default=None)),
+        ("inject_css", config_options.Type(bool, default=True)),
+    )
+
     def on_config(self, config):
-        """
-        Install theme assets when the configuration is loaded and update the 
-theme config.
-        """
-        # Use the docs_dir from config, and put assets in a 'theme' subdirectory
-        docs_dir = config.get("docs_dir", "docs")
-        target_dir = Path(docs_dir) / "theme"
+        theme = config.get("theme")
 
-        install_assets(target_dir=str(target_dir))
-
-        # Dynamically update the theme configuration to use the newly created 
-custom_dir
-        if "theme" not in config:
+        if not theme:
             config["theme"] = {}
+            theme = config["theme"]
 
-        config["theme"]["custom_dir"] = str(target_dir)
+        # Ensure Material theme baseline
+        theme["name"] = theme.get("name", "material")
 
-        # Inject default auto-dark-mode palette if not already defined
-        if "palette" not in config["theme"]:
-            config["theme"]["palette"] = [
-                {
-                    "scheme": "default",
-                    "primary": "#ff0000",
-                    "accent": "#ff0000",
-                    "toggle": {
-                        "icon": "sunny",
-                        "name": "Switch to dark mode",
-                    },
+        # Branding defaults
+        if self.config["logo"]:
+            theme["logo"] = self.config["logo"]
+
+        if self.config["favicon"]:
+            theme["favicon"] = self.config["favicon"]
+
+        # Inject palette safely (do not overwrite user config)
+        theme.setdefault("palette", [
+            {
+                "scheme": "default",
+                "primary": self.config["primary_color"],
+                "accent": self.config["primary_color"],
+                "toggle": {
+                    "icon": "brightness-7",
+                    "name": "Switch to dark mode",
                 },
-                {
-                    "scheme": "slate",
-                    "primary": "#ff0000",
-                    "accent": "#ff0000",
-                    "toggle": {
-                        "icon": "moon",
-                        "name": "Switch to light mode",
-                    },
+            },
+            {
+                "scheme": "slate",
+                "primary": self.config["primary_color"],
+                "accent": self.config["primary_color"],
+                "toggle": {
+                    "icon": "brightness-4",
+                    "name": "Switch to light mode",
                 },
-            ]
+            },
+        ])
+
+        # Inject CSS via MkDocs native mechanism
+        if self.config["inject_css"]:
+            config.setdefault("extra_css", [])
+            config["extra_css"].append("cloudmesh_ai_theme/custom.css")
 
         return config
 =============================
+
 
 =============================
 main.html
@@ -1018,6 +1263,7 @@ SOURCES.txt
 ---------------------------------------
 MANIFEST.in
 README.md
+VERSION
 pyproject.toml
 src/cloudmesh_ai_theme/__init__.py
 src/cloudmesh_ai_theme/plugin.py
@@ -1032,6 +1278,7 @@ src/cloudmesh_ai_theme/assets/favicon copy.ico
 src/cloudmesh_ai_theme/assets/favicon.svg
 src/cloudmesh_ai_theme/assets/logo-white.png
 src/cloudmesh_ai_theme/css/custom.css
+src/cloudmesh_ai_theme/theme/__init__.py
 src/cloudmesh_ai_theme/theme/main.html
 tests/test_theme.py
 =============================
@@ -1050,6 +1297,9 @@ cloudmesh-ai-theme-install = cloudmesh_ai_theme:install_assets
 
 
 cloudmesh-ai-theme = cloudmesh_ai_theme.plugin:CloudmeshAIThemePlugin
+
+
+cloudmesh-ai-theme = cloudmesh_ai_theme
 =============================
 
 =============================

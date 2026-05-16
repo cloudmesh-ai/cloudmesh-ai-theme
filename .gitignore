@@ -1,4 +1,4 @@
-__pycache__/
+provide __pycache__/
 *.pyc
 *.pyo
 
@@ -21,3 +21,6 @@ htmlcov/
 
 # OS
 .DS_Store
+
+.release_state.json
+.report.html

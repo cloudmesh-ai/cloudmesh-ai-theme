@@ -3,7 +3,11 @@
     border-radius: 4px !important; 
     padding: 0.5rem !important; 
     margin: 0.5rem 0 !important; 
-    background-color: var(--md-code-bg-color, #ffffff) !important;
+    background-color: #ffffff !important;
+}
+
+.doc-object .doc-object {
+    background-color: transparent !important;
 }
 
 [data-md-color-scheme="slate"] .doc-object {
