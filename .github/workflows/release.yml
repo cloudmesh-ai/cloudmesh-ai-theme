@@ -31,10 +31,3 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Publish to PyPI
-        run: |
-          pip install twine
-          python -m twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
