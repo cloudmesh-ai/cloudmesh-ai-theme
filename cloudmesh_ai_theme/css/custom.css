@@ -1,0 +1,11 @@
+.doc-object { 
+    border: 1px solid rgba(0, 0, 0, 0.2) !important; 
+    border-radius: 4px !important; 
+    padding: 0.5rem !important; 
+    margin: 0.5rem 0 !important; 
+    background-color: var(--md-code-bg-color, #ffffff) !important;
+}
+
+[data-md-color-scheme="slate"] .doc-object {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}

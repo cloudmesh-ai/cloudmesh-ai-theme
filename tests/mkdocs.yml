@@ -1,0 +1,14 @@
+site_name: Cloudmesh AI Theme Test
+theme:
+  name: material
+  custom_dir: ../cloudmesh_ai_theme
+  primary_color: "#ff0000"
+  favicon: assets/favicon.svg
+  logo: assets/logo-white.png
+  palette:
+    - scheme: default
+      primary: "#ff0000"
+      accent: "#ff0000"
+    - scheme: slate
+      primary: "#ff0000"
+      accent: "#ff0000"

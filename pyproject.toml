@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloudmesh-ai-theme"
+dynamic = ["version"]
+description = "Theme for Cloudmesh AI documentation"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools]
+include-package-data = true
+packages = ["cloudmesh_ai_theme"]
+
+[tool.setuptools.dynamic]
+version = {attr = "cloudmesh_ai_theme.__version__"}
+
+[tool.setuptools.package-data]
+cloudmesh_ai_theme = ["assets/*", "css/*", "theme/*", "theme.yml"]
+
+[project.scripts]
+cloudmesh-ai-theme-install = "cloudmesh_ai_theme:install_assets"
+
+[project.entry-points."mkdocs.themes"]
+cloudmesh-ai-theme = "cloudmesh_ai_theme"

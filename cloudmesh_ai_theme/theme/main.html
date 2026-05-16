@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ path.rel_path('theme/custom.css') }}">
+  {% if theme.primary_color %}
+  <style>
+    :root {
+      --md-primary-color: {{ theme.primary_color }};
+    }
+  </style>
+  {% endif %}
+{% endblock %}
+
+{% block site_name %}
+  <a href="{{ 'home'|url }}" class="site-title">
+    {% if theme.logo %}
+      <img src="{{ theme.logo }}" alt="Logo">
+    {% else %}
+      Cloudmesh AI
+    {% endif %}
+  </a>
+{% endblock %}
+
+{% block footer %}
+  {{ super() }}
+  <div class="footer-branding" style="text-align: center; padding: 1em; font-size: 0.8em; opacity: 0.7;">
+    &copy; {{ now().year }} Cloudmesh AI. All rights reserved.
+  </div>
+{% endblock %}
