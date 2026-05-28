@@ -33,6 +33,11 @@ class CloudmeshAIThemePlugin(BasePlugin):
         # Ensure Material theme baseline
         theme["name"] = theme.get("name", "material")
 
+        # Enable Material theme features
+        features = theme.setdefault("features", [])
+        if "content.code.copy" not in features:
+            features.append("content.code.copy")
+
         # Handle Assets (Logo/Favicon)
         # We copy assets to the docs directory so MkDocs can find them
         # Use docs/assets/theme to avoid triggering MkDocs custom theme override (docs/theme)

@@ -2,6 +2,8 @@
 
 Welcome to the guide for the **Cloudmesh AI Theme**. This package provides a consistent look and feel for Cloudmesh AI project documentation, built as an extension of the Material for MkDocs theme.
 
+For the full interactive documentation, please visit: [https://cloudmesh-ai.github.io/cloudmesh-ai-theme/](https://cloudmesh-ai.github.io/cloudmesh-ai-theme/)
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Installation](#installation)
