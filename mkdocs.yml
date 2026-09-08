@@ -1,4 +1,4 @@
-site_name: Cloudmesh AI Theme Test
+site_name: Cloudmesh AI Theme
 theme:
   name: material
   primary_color: "#ff0000"
@@ -11,6 +11,12 @@ theme:
     - scheme: slate
       primary: "#ff0000"
       accent: "#ff0000"
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Development: development.md
+  - Maintainer's Guide: maintainer.md
 
 plugins:
   - search
