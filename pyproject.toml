@@ -45,3 +45,5 @@ cloudmesh_ai_theme = [
   "theme/*",
   "theme.yml"
 ]
+[tool.cloudmesh-ai]
+status = "stable"
