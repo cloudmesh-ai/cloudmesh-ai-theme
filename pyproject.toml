@@ -48,4 +48,4 @@ cloudmesh_ai_theme = [
 [tool.cloudmesh-ai]
 category = "foundation"
 status = "stable"
-order = 30
+order = 40
