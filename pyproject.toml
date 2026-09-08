@@ -46,4 +46,5 @@ cloudmesh_ai_theme = [
   "theme.yml"
 ]
 [tool.cloudmesh-ai]
+category = "foundation"
 status = "stable"
